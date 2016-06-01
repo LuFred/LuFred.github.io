@@ -64,7 +64,7 @@ print @sql
 exec(@sql)
 
 {% endhighlight %}
-## Sql Server20005实现  
+## Sql Server2005实现  
 {% highlight Sql Server %}
 
 --静态sql
