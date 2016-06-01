@@ -3,7 +3,7 @@ layout: post
 title: "SQL Server实现行列转换"
 subtitle: ""
 subtitleAuthor: ""
-date: 2016-05-13
+date: 2016-01-01
 author: LuJiangBo
 category: SqlServer
 tags: SqlServer
@@ -12,12 +12,12 @@ finished: true
 
 ## 场景
  早上一个朋友问我这样一个问题，如下图：  
-![问题]({{ post.url| prepend: site.url  }}/content/images/201605/2016-06-01-SqlServerColumnstorows.png)  
+![问题]({{ post.url| prepend: site.url  }}/content/images/201606/2016-06-01-SqlServerColumnstorows.png)  
 一看其实就是sql中的列转行问题。东西也不是很复杂，就不废话了直接上脚本，一看就明白了。
 
 ## 重点  
 * Sql Server 2000通过聚合函数＋ SELECT...CASE 语句实现行列转换。
-* Sql Server2005之后加了 PIVOT 和 UNPIVOT函数。其作用就是行转列、列转行。这里就不多说，可以看微软的[文档](https://technet.microsoft.com/zh-cn/library/ms177410(v=sql.105).aspx)。
+* Sql Server2005之后加了PIVOT和 UNPIVOT函数。其作用就是行转列、列转行。这里就不多说，可以看微软的[文档](https://technet.microsoft.com/zh-cn/library/ms177410(v=sql.105).aspx)。
  
 ## 创建测试表及测试数据  
 {% highlight Sql Server %}
