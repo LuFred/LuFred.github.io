@@ -3,7 +3,7 @@ layout: post
 title: "SQL Server实现行列转换"
 subtitle: ""
 subtitleAuthor: ""
-date: 2016-01-01
+date: 2016-06-01
 author: LuJiangBo
 category: SqlServer
 tags: SqlServer
@@ -17,7 +17,7 @@ finished: true
 
 ## 重点  
 * Sql Server 2000通过聚合函数＋ SELECT...CASE 语句实现行列转换。
-* Sql Server2005之后加了PIVOT和 UNPIVOT函数。其作用就是行转列、列转行。这里就不多说，可以看微软的[文档](https://technet.microsoft.com/zh-cn/library/ms177410(v=sql.105).aspx)。
+* Sql Server2005之后加了PIVOT和 UNPIVOT函数来实现行转列、列转行。这里就不多说，可以看微软的[文档](https://technet.microsoft.com/zh-cn/library/ms177410(v=sql.105).aspx)。
  
 ## 创建测试表及测试数据  
 {% highlight Sql Server %}
