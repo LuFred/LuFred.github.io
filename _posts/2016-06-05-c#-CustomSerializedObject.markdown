@@ -1,12 +1,11 @@
 ---
 layout: post
 title: "自定义可序列化对象"
-subtitle: ""
-subtitleAuthor: ""
+subtitle: "自定义可序列化对象"
 date: 2016-06-05
 author: LuJiangBo
-category: C#
-tags: C#
+tags: DotNet
+keyword: 
 finished: true
 ---
 

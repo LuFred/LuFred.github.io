@@ -2,10 +2,8 @@
 layout: post
 title: "SQL Server实现行列转换"
 subtitle: ""
-subtitleAuthor: ""
 date: 2016-06-01
 author: LuJiangBo
-category: SqlServer
 tags: SqlServer
 finished: true
 ---

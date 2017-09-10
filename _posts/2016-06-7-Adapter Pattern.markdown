@@ -2,11 +2,10 @@
 layout: post
 title: "适配器模式"
 subtitle: "每一个模式描述了一个在外面周围不断重复发生的问题，以及该问题的解决方案的核心。这样，你就能一次又一次地使用该方案而不必做重复劳动。"
-subtitleAuthor: "——克里斯托弗·亚历山大"
 date: 2016-06-07
 author: LuJiangBo
-category: Software design pattern
 tags: 设计模式
+keyword: 设计模式 适配器模式
 finished: true
 ---
 
