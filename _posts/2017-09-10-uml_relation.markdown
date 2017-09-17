@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "UML表达关系术语"
-subtitle: "UML各类事物之间的关系"
+subtitle: "软件工程学习笔记之UML各类事物之间的关系"
 date: 2017-09-10
 author: LuJiangBo
 tags: 软件工程

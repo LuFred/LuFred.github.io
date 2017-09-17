@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "UML类与对象"
-subtitle: "UML类与对象基本表示"
+subtitle: "软件工程学习笔记之UML类与对象基本表示"
 date: 2017-09-10
 author: LuJiangBo
 tags: 软件工程
