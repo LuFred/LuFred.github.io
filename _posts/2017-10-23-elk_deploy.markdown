@@ -1,17 +1,23 @@
 ---
 layout: post
-title: "高内聚低耦合"
-subtitle: "软件工程学习笔记之细说高内聚低耦合"
-date: 2017-09-10
+title: "ELK安装部署"
+subtitle: "Elasticsearch、Logstash、Kinaba、FileBeat 安装和部署"
+date: 2017-10-23
 author: LuJiangBo
-tags: 软件工程
-keyword: 软件工程,高内聚低耦合
+tags: ELK
+keyword: Elasticsearch,Logstash,Kinaba,FileBeat 
 finished: true
 ---
 
 
 ## 原因及目的   
-    实现日志的自动采集、分析、展示
+实现日志的自动采集、分析、展示   
+## 工具介绍  
+* Elasticsearch：是个开源分布式搜索引擎，它的特点有：分布式，零配置，自动发现，索引自动分片，索引副本机制，restful风格接口，多数据源，自动搜索负载等。  
+* Logstash：是一个完全开源的工具，他可以对你的日志进行收集、过滤，并将其存储供以后使用（如，搜索）。  
+
+* Kibana： 是一个开源和免费的工具，它Kibana可以为 Logstash 和 ElasticSearch 提供的日志分析友好的 Web 界面，可以帮助您汇总、分析和搜索重要数据日志。  
+* Filebeat：是一个日志文件托运工具，在你的服务器上安装客户端后，filebeat会监控日志目录或者指定的日志文件，追踪读取这些文件（追踪文件的变化，不停的读），并且转发这些信息到elasticsearch或者logstarsh中存放。
 
 ## 环境
 > CentOS
@@ -19,31 +25,31 @@ finished: true
 ## 依赖
 > java 8及以上
 
-## 安装顺序
+## 安装
 > 1.java环境  
 > 2.Elasticsearch  
 > 3.Kibana  
 > 4.Logstash  
 > 5.FileBeat  
-* ps:当然出来第一样，后面几样的安装顺序也并不一定要向上面一直，这里我采用这个顺序安装。  
+* ps:安装的优先级并不需要严格分先后。  
 
 ## 1.安装java环境  
 
-### 下载的java jdk
-这里我就下载当前最新的[9.0.1](http://www.oracle.com/technetwork/java/javase/downloads/jdk9-downloads-3848520.html)
-
-### 解压
-tar -xzf jdk-9.0.1_linux-x64_bin.tar.gz -C /usr/src
-
-### 设置全局环境变量
-* export JAVA_HOME=/usr/lib/jvm/java**
-* export PATH=$PATH:$JAVA_HOME/bin
-
-### 检查java环境是否安装成功
-> 命令：java -version  
-java version "9.0.1"  
-Java(TM) SE Runtime Environment (build 9.0.1+11)  
-Java HotSpot(TM) 64-Bit Server VM (build 9.0.1+11, mixed mode)  
+* 下载的java jdk
+    * 这里我就下载当前最新的[9.0.1](http://www.oracle.com/technetwork/java/javase/downloads/jdk9-downloads-3848520.html)  
+这里在后面安装Logstash时会爆出一个错误(不支持java9)
+* 解压
+    * tar -xzf jdk-9.0.1_linux-x64_bin.tar.gz -C /usr/src
+* 设置全局环境变量
+    * export JAVA_HOME=/usr/lib/jvm/java**
+    * export PATH=$PATH:$JAVA_HOME/bin
+* 检查java环境是否安装成功
+    *  命令：java -version  
+    ```
+    java version "9.0.1"  
+    Java(TM) SE Runtime Environment (build 9.0.1+11)  
+    Java HotSpot(TM) 64-Bit Server VM (build 9.0.1+11, mixed mode)  
+    ```
 出现上述内容表示jdk配置成功
 
 ## 安装Elasticsearch
@@ -166,7 +172,7 @@ output.logstash:
 
 ```
 
-## elk联通配置
+## elk连通配置
 
 ### 1.配置logstash，让它能够接收filebeat的日志数据
 * 假设日志格式为：  E1019 02:02:50.154436    5523 main.go:22] error message
@@ -232,30 +238,29 @@ output.logstash:
 
 
 ### 2.配置filebeat，使其将数据传给logstash
-* 修改配置文件
-```
-#filebeat.yml文件中取消如下注释
+* 修改配置文件  
+    ```
+    #filebeat.yml文件中取消如下注释
 
-filebeat.prospectors:
+    filebeat.prospectors:
 
-- input_type: log
+    - input_type: log
 
-  # Paths that should be crawled and fetched. Glob based paths.
-  paths:
-    - /var/log/*.*
+    # Paths that should be crawled and fetched. Glob based paths.
+    paths:
+        - /var/log/*.*
 
 
-output.logstash:
-  # The Logstash hosts
-  hosts: ["localhost:5043"]
+    output.logstash:
+    # The Logstash hosts
+    hosts: ["localhost:5043"]
 
-```
+    ```
 启动：./filebeat
 
-若全部都配置正确，运行之后再logstash命令窗口应该能看到如下内容：
+若全部都配置正确，运行之后在logstash命令窗口应该能看到如下内容：
 ![kibana]({{ post.url| prepend: site.url  }}/content/images/201710/elk_deploy02.jpg)   
 同时打开kibana
 
 创建索引后应该能看到如下日志信息：
 ![kibana]({{ post.url| prepend: site.url  }}/content/images/201710/elk_deploy03.jpg)   
-同时打开kibana
