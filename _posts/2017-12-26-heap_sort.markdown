@@ -1,0 +1,82 @@
+---
+layout: post
+title: "堆排序"
+subtitle: ""
+date: 2017-12-25
+author: LuJiangBo
+tags: 算法
+keyword: 排序,算法,数据结构
+finished: true
+---
+# 堆排序
+
+堆排序是在[二叉堆]({{ post.url| prepend: site.url  }}/2017/11/25/binary_heap)的基础上实现的一种排序算法。
+
+## 算法原理
+
+* 方法1：耗时：O(N)+O(NlogN)
+    * 首先需要建立N个元素的二叉堆(小根堆),该操作花费O(N)时间
+    * 然执行N次的DeleteMin操作，按照顺序，最小元素先离开该堆[每次Delete花费O(logN)时间，总花费O(NlogN)]
+    * 通过将第二步的元素记录到一个新的数组中，即得到了N个元素的排序
+* 方法2：上一种方法的不足之处在于它使用了一个附加的数组，因此存储需求增加了一倍。所以为了避免这种情况，聪明的做法如下
+    * 首先需要建立N个元素的二叉堆(大根堆),该操作花费O(N)时间
+    * 将根节点与末尾的节点进行互换，此时末尾就是最大值
+    * 然后将剩余的N-1个节点重新构建成一个大根堆(只需要重新构建根节点)
+    * 如此反复2,3两步，直到交换A[0]和A[1]为止
+
+## go语言代码实现
+
+```
+package main
+
+import (
+	"log"
+)
+
+func main() {
+	var numbs []int = []int{1, 4, 3, 2, 5, 4, 7, 6, 9, 8, 11}
+	l := len(numbs)
+	for i := l / 2; i >= 0; i-- { //建堆
+		PercDown(numbs, i, l) //调整堆节点
+	}
+	for i := l - 1; i > 0; i-- {
+		Swap(numbs, 0, i)     //每次讲最大根放到末尾
+		PercDown(numbs, 0, i) //调整根节点
+	}
+	log.Println("排序后=", numbs)
+}
+
+func PercDown(numbs []int, i int, n int) {
+	var tmp, child int
+	for tmp = numbs[i]; 2*i+1 < n; i = child {
+		child = 2*i + 1
+		if child != n-1 && numbs[child+1] > numbs[child] {
+			child++
+		}
+		if tmp < numbs[child] {
+			numbs[i] = numbs[child]
+		} else {
+			break
+		}
+	}
+	numbs[i] = tmp
+}
+
+//Swap 交换2个位置元素
+func Swap(numbs []int, indexx, indexy int) {
+	var tmp int
+	tmp = numbs[indexx]
+	numbs[indexx] = numbs[indexy]
+	numbs[indexy] = tmp
+}
+```
+ 
+
+## 分析
+
+堆排序简单的可以理解成建堆-删根节点-调整堆3个过程的循环，第一阶段建堆最多用到2N次比较，而第i次删除调整最多用到2logi次比较，所以总数最多为2NlogN-O(N)次比较(N>=2)。因此，最坏的情形下，堆排序最多使用2NlogN-O(N)次比较。  
+堆排序是一个时间复杂度非常稳定的算法：它的平均使用的比较2NlogN-O(NlogN)只比最坏情形略少。  
+
+## 总结
+
+堆排序是一种不稳定排序(不保证排序前2个相等的数其在序列的前后位置顺序和排序后它们两个的前后位置顺序相同)，时间复杂度一般认为就是O(NlogN)级。
