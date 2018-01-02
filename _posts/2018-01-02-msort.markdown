@@ -1,0 +1,94 @@
+---
+layout: post
+title: "归并排序"
+subtitle: ""
+date: 2017-12-25
+author: LuJiangBo
+tags: 算法
+keyword: 排序,算法,数据结构
+finished: true
+---
+# 希尔算法
+
+归并排序是创建在归并操作上的一种有效的排序算法效率为O(nlogn)。同时它也是递归算法的一个很好的例子
+
+## 算法原理
+
+该算法中的基本操作是合并两个已经排序好的表，因为这两个表是已排序的，所以只需要循环比较，将结果放入第三个表中，通过对输入数据的一趟排序即可完成。  
+下图取自维基百科的动图，它展示了归并操作的过程：
+![归并操作]({{ post.url| prepend: site.url  }}/content/images/201801/Merge-sort-example-300px.gif)
+因此，归并算法很容易描述，即如果N=1，那么只有一个元素需要排序，否则，递归地将前半部分数据和后半部分数据各自归并排序，得到的排序后的两部分数据，然后使用上面描述的合并规则再将这两部分合并起来。
+
+## go语言代码实现
+
+```
+
+package main
+
+import (
+	"log"
+)
+
+func main() {
+	var testarr = []int{22, 566, 1, 7, 3, 2, 16, 55, 998, 12, 3}
+	var tmparr []int
+	l := len(testarr)
+	tmparr = make([]int, l, l)
+
+	log.Println("排序前：", testarr)
+	Sort(testarr, tmparr, 0, l-1)
+	log.Println("排序后：", testarr)
+}
+
+//递归将大表分成一些小表(知道表中元素只有1),然后使用合并操作
+func Sort(array, tmparray []int, left, right int) {
+	if left < right {
+		center := (left + right) / 2
+		Sort(array, tmparray, left, center)
+		Sort(array, tmparray, center+1, right)
+		Merge(array, tmparray, left, center+1, right)
+	}
+}
+
+func Merge(array, tmparray []int, lpos, rpos, rend int) {
+	var lend, tmppos, numEles int
+	tmppos = lpos
+	lend = rpos - 1
+	numEles = rend - lpos + 1
+	//左右2侧数组比较取较小值放入tmp，直到一侧数据取空
+	for lpos <= lend && rpos <= rend {
+		if array[lpos] <= array[rpos] {
+			tmparray[tmppos] = array[lpos]
+			lpos++
+		} else {
+			tmparray[tmppos] = array[rpos]
+			rpos++
+		}
+		tmppos++
+	}
+	//合并剩余左侧数组
+	for lpos <= lend {
+		tmparray[tmppos] = array[lpos]
+		tmppos++
+		lpos++
+	}
+	//合并剩余右侧数组
+	for rpos <= rend {
+		tmparray[tmppos] = array[rpos]
+		tmppos++
+		rpos++
+	}
+	//将tmp中的数组放入array
+	for i := 0; i < numEles; i++ {
+		array[rend] = tmparray[rend]
+		rend--
+	}
+}
+
+
+```
+
+
+## 分析
+
+虽然归并排序的时间复杂度是O(nlogn),但是它很难用于主存排序，主要的问题在于合并两个排序的表需要线性附加内存，在整个算法中还要花费数据拷贝到临时数组再拷贝回来这样一些附加的操作，其结果严重放慢了排序速度
